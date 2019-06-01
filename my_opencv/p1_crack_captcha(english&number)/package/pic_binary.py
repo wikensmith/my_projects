@@ -12,7 +12,7 @@ import time
 class PicBinary:
     def __init__(self, img):
         self.img = img
-        self.q = Queue
+        self.q = Queue()
         self.visited = set()
         self.binaryed_img = ""
 
@@ -24,11 +24,11 @@ class PicBinary:
         blured2 = cv.medianBlur(binary, 5)
         # kernel = np.ones((3,3), np.uint8)
         # opening = cv.morphologyEx(blured, cv.MORPH_OPEN, kernel)
-        cv.imshow("img", self.img)
+        # cv.imshow("img", self.img)
         # cv.imshow("bin", opening)
         # cv.imshow("blured", blured)
-        cv.imshow("blured2", blured2)
-        print(blured2.shape, "shape")
+        # cv.imshow("blured2", blured2)
+        # print(blured2.shape, "shape")
         # name = f'./pic/dealed/{str(int(time.time()*1000))}_{text}.png'
         # cv.imwrite(name, blured2)
         # cv.waitKey(0)
@@ -51,7 +51,7 @@ class PicBinary:
                     for m, n in func:
                         if img[i + m, j + n] == 0:
                             sum_round += 1
-                    print(sum_round)
+                    # print(sum_round)
                     if sum_round >= 11:
                         img[i, j] = 0
                         img[i, j + 1] = 0
@@ -80,13 +80,26 @@ class PicBinary:
         :return:
         """
         h, w = self.binaryed_img.shape
+        print(h, w,"sss")
         func = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+        print(self.q.empty())
+        # print(self.q.get())
         while not self.q.empty():
             i, j = self.q.get()
+            print(i, j , "in while")
             for m, n in func:
-                if self.binaryed_img[i + m, j + n] == 255 and \
-                        self.binaryed_img not in self.visited:
-                    self.q.put(i + m, j + n)
+                print(i+m, j+n, "here")
+                try:
+                    if self.binaryed_img[i + m, j + n] == 255 and \
+                            self.binaryed_img not in self.visited:
+                        print(i, j, "for in ")
+                        # self.visited.add((i+m, j+n))
+                        # self.q.put(i + m, j + n)
+                except Exception as e:
+                    print(e)
+                    pass
+
+
 
     def cut(self):
         pass
@@ -94,6 +107,14 @@ class PicBinary:
     def main(self):
         image = self.binary()
         self.binaryed_img = self.delete_noisy(image)
+        # cv.imshow("ss", self.binaryed_img)
+        # cv.waitKey(0)
+        x = 0
+        for i in range(4):
+            self.get_begining(x)
+            self.traverse()
+        cv.imshow("img", self.visited)
+        cv.waitKey(0)
 
 
 # cv.imshow("sso", self.img)
@@ -102,5 +123,8 @@ class PicBinary:
 
 
 if __name__ == '__main__':
-    text, img = gen_captcha_text_and_image()
+    # text, img = gen_captcha_text_and_image()
+    img = cv.imread("./pic/agnu.png")
+    # cv.imshow("imgo", img)
+    # cv.waitKey(0)
     PicBinary(img).main()

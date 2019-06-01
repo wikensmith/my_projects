@@ -3,6 +3,7 @@ author: wiken
 Date:2019/5/31
 """
 from captcha.image import ImageCaptcha  # pip install captcha
+import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
@@ -46,10 +47,12 @@ if __name__ == '__main__':
     # gen_captcha_text_and_image()
     # 测试
     text, image = gen_captcha_text_and_image()
+    cv.imwrite(f"./pic/{text}.png", image)
 
-    f = plt.figure()
-    ax = f.add_subplot(111)
-    ax.text(0.1, 0.9, text, ha='center', va='center', transform=ax.transAxes)
-    plt.imshow(image)
 
-    plt.show()
+    # f = plt.figure()
+    # ax = f.add_subplot(111)
+    # ax.text(0.1, 0.9, text, ha='center', va='center', transform=ax.transAxes)
+    # plt.imshow(image)
+    #
+    # plt.show()
