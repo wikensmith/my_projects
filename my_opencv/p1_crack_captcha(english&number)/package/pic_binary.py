@@ -135,7 +135,7 @@ class PicBinary:
                 continue
             img[i, j- x_min + 10] = 255
             pixel_sum += 1
-        print(pixel_sum, "pixel_sum")
+        # print(pixel_sum, "pixel_sum")
         if pixel_sum < 100:
             return "", "", x_max + 3
         width = x_max - x_min
@@ -165,7 +165,7 @@ class PicBinary:
                 self.get_begining(x)
                 self.traverse()
                 x, name, img = self.cut()
-                print(name)
+                # print(name)
                 yield name, img
                 if not x:
                     break
