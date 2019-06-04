@@ -6,16 +6,27 @@ Date:2019/6/3
 import cv2 as cv
 from matplotlib import pyplot as plt
 import numpy as np
+import os
 
-
-img = cv.imread("./pic/1559575748036.png")
-h, w, c = img.shape
-print(h, w, c)
-c1 = img[:,:,0]
-c2 = img[:, :, 1]
-c3 = img[:, :, 2]
-# print(c1)
-print(img.shape[:2])
+name = os.listdir("./pic")
+print(name)
+plt.subplot()
+for i in name:
+    if "." in i:
+        img = cv.imread("./pic/1559623977257.png")
+        h, w, c = img.shape
+        c1 = img[:,:,0]
+        c2 = img[:, :, 1]
+        c3 = img[:, :, 2]
+        # print(c1)
+        plt.subplot()
+        # print(img.shape[:2])
+        plt.hist(c1.ravel(), 256)
+        plt.hist(c2.ravel(), 256)
+        plt.hist(c3.ravel(), 256)
+        plt.title(f"test{i}", fontsize=8)
+        plt.xticks([]), plt.yticks([])
+        plt.show()
 
 
 
@@ -32,14 +43,14 @@ def get_num(img):
 
 
 
-
-plt.subplot()
-plt.hist(c1.ravel(), 256)
-plt.hist(c2.ravel(), 256)
-plt.hist(c3.ravel(), 256)
-plt.title("test", fontsize=8)
-plt.xticks([]), plt.yticks([])
-plt.show()
+#
+#
+# plt.hist(c1.ravel(), 256)
+# plt.hist(c2.ravel(), 256)
+# plt.hist(c3.ravel(), 256)
+# plt.title("test", fontsize=8)
+# plt.xticks([]), plt.yticks([])
+# plt.show()
 
 # images = [img, 0, th1, img, 0, th2, blur, 0, th3]
 # titles = ['Original', 'Histogram', 'Global(v=100)',
