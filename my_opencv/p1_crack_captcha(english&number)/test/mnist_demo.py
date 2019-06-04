@@ -8,9 +8,9 @@ import tensorflow as tf
 mnist = input_data.read_data_sets("./mnist", one_hot=True)
 
 batch = mnist.train.next_batch(50)
-print(batch[0])
+print(type(batch[0]), batch[0].shape)
 print("______________________________")
-print(batch[1].shape)
+print(type(batch[1]), batch[1].shape)
 #
 # sess = tf.InteractivateSession()
 #
