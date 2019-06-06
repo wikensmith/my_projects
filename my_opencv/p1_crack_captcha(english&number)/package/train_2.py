@@ -42,7 +42,7 @@ def max_pool_2x2( x):
 
 
 x = tf. placeholder(tf.float32, [None, 4800])
-y_ = tf.placeholder(tf.float32, [None, 3906])  # 36*36+36   (所有可能结果的组合)
+y_ = tf.placeholder(tf.float32, [None, 62])  # 36*36+36   (所有可能结果的组合)
 img = tf.reshape(x, [-1, 60, 80, 1])
 w_conv1 = weight_variable([5, 5, 1, 32])
 b_conv1 = bias_variable([32])
@@ -62,8 +62,8 @@ h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, w_fc1) + b_fc1)
 keep_prob = tf.placeholder(tf.float32)
 h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 
-w_fc2 = weight_variable([1024, 3906])
-b_fc2 = bias_variable([3906])
+w_fc2 = weight_variable([1024, 62])
+b_fc2 = bias_variable([62])
 y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, w_fc2) + b_fc2)
 cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y_conv),
                                               reduction_indices=[1]))
@@ -80,15 +80,15 @@ alph_lst = gen_dic()
 for i in range(3000):
     print(f"第 {i} 次")
     n = 0
-    y_real = np.zeros((1, 3906))
+    y_real = np.zeros((1, 62))
     img = np.zeros((1, 4800))
     while True:
         text, image = ac.__next__()
         if not text:
             continue
-        temp_y = np.zeros([3906], np.uint8)
+        temp_y = np.zeros([62], np.uint8)
         # print(text, type(image))
-        if str(text) not in alph_lst or not isinstance(image, np.ndarray):
+        if str(text) not in alph_lst or not isinstance(image, np.ndarray) or len(text)==2:
             continue
         temp_img = image.ravel()
         index = alph_lst.index(str(text))
@@ -98,12 +98,12 @@ for i in range(3000):
         n += 1
         if n == 49:
             break
-    np.delete(y_, 0, axis=0)
+    np.delete(y_real, 0, axis=0)
     np.delete(img, 0, axis=0)
     # print(y_real.shape, type(y_real), "shape of y_")
     # print(img.shape,type(img),  "img shape")
 
-    train_step.run(feed_dict={x: img, y_: y_real, keep_prob: 0.5})
+    train_step.run(feed_dict={x: img, y_: y_real, keep_prob: 0.8})
     if i % 5 == 0:
         train_accuracy = accuracy.eval(feed_dict={x: img, y_: y_real,
                                                   keep_prob: 1.0})

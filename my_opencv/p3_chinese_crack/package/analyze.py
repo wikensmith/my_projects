@@ -4,65 +4,55 @@ Date:2019/6/3
 """
 
 import cv2 as cv
+import time
 from matplotlib import pyplot as plt
 import numpy as np
 import os
-
-name = os.listdir("./pic")
-print(name)
-plt.subplot()
-for i in name:
+name_lst = os.listdir("./pic")
+for i in name_lst:
     if "." in i:
-        img = cv.imread("./pic/1559623977257.png")
+        # print(i)
+        n = f'./pic/{i}'
+        img = cv.imread(n)
+        img2 = img.copy()
         h, w, c = img.shape
-        c1 = img[:,:,0]
-        c2 = img[:, :, 1]
-        c3 = img[:, :, 2]
-        # print(c1)
-        plt.subplot()
-        # print(img.shape[:2])
-        plt.hist(c1.ravel(), 256)
-        plt.hist(c2.ravel(), 256)
-        plt.hist(c3.ravel(), 256)
-        plt.title(f"test{i}", fontsize=8)
-        plt.xticks([]), plt.yticks([])
-        plt.show()
+        # img = cv.GaussianBlur(img,(3,3),0)
+        c1 = img[1, 1, 0]
+        c2 = img[1, 1, 1]
+        c3 = img[1, 1, 2]
+
+
+        for c_ in range(c):
+            if c_ == 0:
+                cx = c1
+            elif c_ == 1:
+                cx = c2
+            elif c_ == 2:
+                cx = c3
+            # print(cx, "ss")
+            for h_ in range(h):
+                for w_ in range(w):
+
+                    if cx-20 < img2[h_, w_, c_] < cx+20:
+                        img2[h_, w_, c_] = 0
+                    if img2[h_, w_, c_] > 190:
+                        img2[h_, w_, c_] = 0
+        # gaus = cv.GaussianBlur(img2,(3,3),0)
+        blured = cv.medianBlur(img2, 5)
+        gaus = cv.GaussianBlur(blured,(3,3), 3, 0)
+        cv.imshow("sss", img2)
+        gray = cv.cvtColor(gaus, cv.COLOR_BGR2GRAY)
+        r, b = cv.threshold(gray, 0, 255,cv.THRESH_BINARY_INV + cv.THRESH_OTSU)
+        name = f'./pic/dealed/{str(int(time.time()*1000))}.png'
+        cv.imwrite(name, b)
+        print("over")
+        # cv.imshow("ss", b)
+        # cv.waitKey(0)
 
 
 
-def get_num(img):
-    h, w = img.shape
-    dic = {}
-    for w_ in range(w):
-        for h_ in range(h):
-            x = img[h_, w_]
-            if str(x) not in dic:
-                dic[str(img[h_, w_])] = 1
-            else:
-                dic[str(x)] += 1
 
 
 
-#
-#
-# plt.hist(c1.ravel(), 256)
-# plt.hist(c2.ravel(), 256)
-# plt.hist(c3.ravel(), 256)
-# plt.title("test", fontsize=8)
-# plt.xticks([]), plt.yticks([])
-# plt.show()
 
-# images = [img, 0, th1, img, 0, th2, blur, 0, th3]
-# titles = ['Original', 'Histogram', 'Global(v=100)',
-#           'Original', 'Histogram', "Otsu's",
-#           'Gaussian filtered Image', 'Histogram', "Otsu's"]
-# img = sum_img.ravel()
-# for i in range(1):
-#     # 绘制原图
-#
-#     # 绘制直方图plt.hist，ravel函数将数组降成一维
-#     plt.subplot(3, 3, i * 3 + 2)
-#     plt.hist(img, 256)
-#     plt.title(titles[i * 3 + 1], fontsize=8)
-#     plt.xticks([]), plt.yticks([])
-# plt.show()
+
