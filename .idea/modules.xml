@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://E:/test/captcha_recgnise/.idea/captcha_recgnise.iml" filepath="E:/test/captcha_recgnise/.idea/captcha_recgnise.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/my_projects.iml" filepath="$PROJECT_DIR$/.idea/my_projects.iml" />
+      <module fileurl="file://E:/yunshang_projects/.idea/yunshang_projects.iml" filepath="E:/yunshang_projects/.idea/yunshang_projects.iml" />
     </modules>
   </component>
 </project>
